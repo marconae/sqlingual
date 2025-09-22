@@ -20,7 +20,7 @@ top_c1, top_c2 = st.columns([.1,.9], vertical_alignment="center")
 with top_c1:
     st.image("assets/logo.png", width=100)
 with top_c2:
-    st.markdown("Transpile SQL between 30 different dialects using [sqlglot](https://github.com/tobymao/sqlglot) 🚀 <br />The default example shows a typical TPC-H query in [Databricks](https://www.databricks.com/) and converts it into [Exasol](https://www.exasol.com)"
+    st.markdown("Transpile SQL between 30 different dialects using [sqlglot](https://github.com/tobymao/sqlglot) 🚀 <br />The default example shows a typical TPC-H query in [Databricks](https://www.databricks.com/) and converts it into [Exasol](https://www.exasol.com)."
                 , unsafe_allow_html=True)
 
 st.divider()
@@ -39,7 +39,7 @@ with input_col:
             index=3
         )
     with c3:
-        transpile_button = st.button("Transpile", type="primary")
+        transpile_button = st.button("Transpile →", type="primary")
 
     input_sql = st_ace(
         value=default_query,
