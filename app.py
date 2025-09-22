@@ -13,15 +13,18 @@ dialects = [
 with open("assets/default_query.sql", "r") as f:
     default_query = f.read()
 
-st.set_page_config(page_title="SQLingual", layout="wide")
+st.set_page_config(
+    page_title="SQLingual",
+    layout="wide",
+    page_icon="assets/logo.png"
+)
 
 top_c1, top_c2 = st.columns([.1,.9], vertical_alignment="center")
 
 with top_c1:
     st.image("assets/logo.png", width=100)
 with top_c2:
-    st.markdown("Transpile SQL between 30 different dialects using [sqlglot](https://github.com/tobymao/sqlglot) 🚀 <br />The default example shows a typical TPC-H query in [Databricks](https://www.databricks.com/) and converts it into [Exasol](https://www.exasol.com)."
-                , unsafe_allow_html=True)
+    st.markdown("Transpile SQL between 30 different dialects using [sqlglot](https://github.com/tobymao/sqlglot) 🚀")
 
 st.divider()
 
