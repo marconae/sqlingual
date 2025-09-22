@@ -22,11 +22,9 @@ st.set_page_config(
 top_c1, top_c2 = st.columns([.1,.9], vertical_alignment="center")
 
 with top_c1:
-    st.image("assets/logo.png", width=100)
+    st.image("assets/logo.png", width=80)
 with top_c2:
     st.markdown("Transpile SQL between 30 different dialects using [sqlglot](https://github.com/tobymao/sqlglot) 🚀")
-
-st.divider()
 
 input_col, output_col = st.columns(2, vertical_alignment="top")
 
@@ -41,8 +39,6 @@ with input_col:
             options=dialects,
             index=3
         )
-    with c3:
-        transpile_button = st.button("Transpile →", type="primary")
 
     input_sql = st_ace(
         value=default_query,
@@ -52,6 +48,19 @@ with input_col:
         height=500,
         auto_update=True
     )
+
+    # Syntax validation
+    sql_is_valid = False
+    if input_sql:
+        try:
+            sqlglot.parse(input_sql, dialect=source_dialect)
+            sql_is_valid = True
+        except Exception as e:
+            st.error(f"Syntax error: {str(e)}", icon="❌")
+            sql_is_valid = False
+
+    with c3:
+        transpile_button = st.button("Transpile →", type="primary", disabled=not sql_is_valid)
 
 with output_col:
     c1, c2 = st.columns([.3,.7], vertical_alignment="center")
