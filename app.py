@@ -13,33 +13,67 @@ dialects = [
 with open("assets/default_query.sql", "r") as f:
     default_query = f.read()
 
+# Initialize session state
+if "sql_is_valid" not in st.session_state:
+    st.session_state.sql_is_valid = True
+if "current_sql" not in st.session_state:
+    st.session_state.current_sql = default_query
+
+# Page config
 st.set_page_config(
     page_title="SQLingual",
     layout="wide",
     page_icon="assets/logo.png"
 )
 
-top_c1, top_c2 = st.columns([.1,.9], vertical_alignment="center")
+# Validate SQL before creating UI elements
+source_dialect = st.session_state.get("source_dialect", dialects[3])
+current_input = st.session_state.get("input_sql", default_query)
+
+if current_input:
+    try:
+        sqlglot.parse(current_input, dialect=source_dialect)
+        st.session_state.sql_is_valid = True
+    except Exception:
+        st.session_state.sql_is_valid = False
+else:
+    st.session_state.sql_is_valid = False
+
+# Top row
+top_c1, top_c2, top_c3 = st.columns([.1, .3, .6], vertical_alignment="center")
 
 with top_c1:
     st.image("assets/logo.png", width=80)
 with top_c2:
     st.markdown("Transpile SQL between 30 different dialects using [sqlglot](https://github.com/tobymao/sqlglot) 🚀")
+with top_c3:
+    ctrl_1, ctrl_2, ctrl_3 = st.columns(3, vertical_alignment="center")
 
-input_col, output_col = st.columns(2, vertical_alignment="top")
-
-with input_col:
-    c1, c2, c3 = st.columns([.3, .5, .2], vertical_alignment="center")
-    with c1:
-        st.markdown("**Input SQL**")
-    with c2:
+    with ctrl_1:
         source_dialect = st.selectbox(
             "",
             label_visibility="collapsed",
             options=dialects,
-            index=3
+            index=3,
+            key="source_dialect"
+        )
+    with ctrl_2:
+        transpile_button = st.button("Transpile →", type="primary", disabled=not st.session_state.sql_is_valid)
+
+    with ctrl_3:
+        target_dialect = st.selectbox(
+            "",
+            label_visibility="collapsed",
+            options=dialects,
+            index=10,
+            key="target_dialect"
         )
 
+
+# Main input columns
+input_col, output_col = st.columns(2, vertical_alignment="top")
+
+with input_col:
     input_sql = st_ace(
         value=default_query,
         language='sql',
@@ -49,31 +83,17 @@ with input_col:
         auto_update=True
     )
 
-    # Syntax validation
-    sql_is_valid = False
     if input_sql:
         try:
             sqlglot.parse(input_sql, dialect=source_dialect)
-            sql_is_valid = True
+            st.session_state.sql_is_valid = True
         except Exception as e:
             st.error(f"Syntax error: {str(e)}", icon="❌")
-            sql_is_valid = False
-
-    with c3:
-        transpile_button = st.button("Transpile →", type="primary", disabled=not sql_is_valid)
+            st.session_state.sql_is_valid = False
+    else:
+        st.session_state.sql_is_valid = False
 
 with output_col:
-    c1, c2 = st.columns([.3,.7], vertical_alignment="center")
-    with c1:
-        st.markdown("**Transpiled SQL**")
-    with c2:
-        target_dialect = st.selectbox(
-            "",
-            label_visibility="collapsed",
-            options=dialects,
-            index=10
-        )
-
     if transpile_button and input_sql:
         try:
             transpiled = sqlglot.transpile(input_sql, read=source_dialect, write=target_dialect, pretty=True)[0]
