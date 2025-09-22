@@ -62,11 +62,6 @@ with output_col:
             index=10
         )
 
-    # Auto-transpile on page load
-    if "auto_transpiled" not in st.session_state:
-        st.session_state.auto_transpiled = True
-        transpile_button = True
-
     if transpile_button and input_sql:
         try:
             transpiled = sqlglot.transpile(input_sql, read=source_dialect, write=target_dialect, pretty=True)[0]
