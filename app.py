@@ -68,7 +68,7 @@ top_c1, top_c2, top_c3 = st.columns([.1, .3, .6], vertical_alignment="center")
 with top_c1:
     st.image("assets/logo.png", width=80)
 with top_c2:
-    st.markdown("Transpile SQL between 30 different dialects using [sqlglot](https://github.com/tobymao/sqlglot) 🚀")
+    st.markdown("Transpile SQL between 30 different dialects 🚀")
 with top_c3:
     ctrl_1, ctrl_2, ctrl_3, ctrl_4 = st.columns([1, 5, 2, 5], vertical_alignment="center")
 
@@ -142,7 +142,7 @@ with open("assets/github-logo.png", "rb") as f:
     github_logo_b64 = base64.b64encode(f.read()).decode()
 
 st.markdown(f"""
-SQLingual by Marco Nätlitz - Follow me on <a href="https://www.linkedin.com/in/marco-naetlitz/" target="_blank"><img src="data:image/png;base64,{linkedin_logo_b64}" width="16" height="16" style="vertical-align: middle; margin-right: 4px;" />LinkedIn</a> and <a href="https://github.com/marconae" target="_blank"><img src="data:image/png;base64,{github_logo_b64}" width="16" height="16" style="vertical-align: middle; margin-right: 4px;" />GitHub</a>
+SQLingual is based on [sqlglot](https://github.com/tobymao/sqlglot). The app is free, [MIT licensed](https://opensource.org/licenses/MIT) and built by Marco Nätlitz - Follow me on <a href="https://www.linkedin.com/in/marco-naetlitz/" target="_blank"><img src="data:image/png;base64,{linkedin_logo_b64}" width="16" height="16" style="vertical-align: middle; margin-right: 4px;" />LinkedIn</a> and <a href="https://github.com/marconae" target="_blank"><img src="data:image/png;base64,{github_logo_b64}" width="16" height="16" style="vertical-align: middle; margin-right: 4px;" />GitHub</a>
 """, unsafe_allow_html=True)
 
 st.markdown("<small>This application temporarily processes queries in memory to support interactive features. Query data is not persisted, stored on disk, or transmitted to external services. All input remains local to your active session and is discarded upon session termination.</small>", unsafe_allow_html=True)
