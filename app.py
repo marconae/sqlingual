@@ -3,18 +3,18 @@ import streamlit as st
 from streamlit_ace import st_ace
 
 
-def create_sql_editor(value="", key="sql_editor", height=500, readonly=False, auto_update=True):
-    """Create a SQL editor with consistent styling and configuration."""
+def sql_editor(value="", key="sql_editor", height=500, readonly=False, auto_update=True):
     return st_ace(
         value=value,
         language='sql',
-        theme='github',
+        theme='eclipse',
         key=key,
         height=height,
         readonly=readonly,
         auto_update=auto_update
     )
 
+# Available dialects of sqlglot
 dialects = [
     "athena", "bigquery", "clickhouse", "databricks", "doris", "dremio", "drill",
     "druid", "duckdb", "dune", "exasol", "fabric", "hive", "materialize", "mysql",
@@ -44,14 +44,15 @@ st.set_page_config(
 source_dialect = st.session_state.get("source_dialect", dialects[3])
 current_input = st.session_state.get("input_sql", default_query)
 
-# Validate current SQL
-sql_is_valid = True
+# Validate current SQL and update session state
 if current_input and current_input.strip():
     try:
         sqlglot.parse(current_input, dialect=source_dialect)
-        sql_is_valid = True
+        st.session_state.sql_is_valid = True
     except Exception:
-        sql_is_valid = False
+        st.session_state.sql_is_valid = False
+else:
+    st.session_state.sql_is_valid = False
 
 # Top row
 top_c1, top_c2, top_c3 = st.columns([.1, .3, .6], vertical_alignment="center")
@@ -61,7 +62,7 @@ with top_c1:
 with top_c2:
     st.markdown("Transpile SQL between 30 different dialects using [sqlglot](https://github.com/tobymao/sqlglot) 🚀")
 with top_c3:
-    ctrl_1, ctrl_2, ctrl_3, ctrl_4 = st.columns([.1, .3,.2,.3], vertical_alignment="center")
+    ctrl_1, ctrl_2, ctrl_3, ctrl_4 = st.columns([1, 5, 2, 5], vertical_alignment="center")
 
     with ctrl_1:
         st.markdown("From:")
@@ -74,7 +75,7 @@ with top_c3:
             key="source_dialect"
         )
     with ctrl_3:
-        transpile_button = st.button("Transpile to →", type="primary", disabled=not sql_is_valid)
+        transpile_button = st.button("Transpile to →", type="primary", disabled=not st.session_state.sql_is_valid)
 
     with ctrl_4:
         target_dialect = st.selectbox(
@@ -90,20 +91,18 @@ with top_c3:
 input_col, output_col = st.columns(2, vertical_alignment="top")
 
 with input_col:
-    input_sql = create_sql_editor(
+    input_sql = sql_editor(
         value=default_query,
         key="input_sql"
     )
 
-    if input_sql:
+    # Show validation feedback
+    if input_sql and not st.session_state.sql_is_valid:
+        # Re-parse to get the specific error message for display
         try:
             sqlglot.parse(input_sql, dialect=source_dialect)
-            st.session_state.sql_is_valid = True
         except Exception as e:
             st.error(f"Syntax error: {str(e)}", icon="❌")
-            st.session_state.sql_is_valid = False
-    else:
-        st.session_state.sql_is_valid = False
 
 with output_col:
     # Handle transpilation
@@ -122,7 +121,7 @@ with output_col:
     final_output = st.session_state.get("transpiled_sql", "")
 
     # Output editor with dynamic key to force refresh
-    output_sql = create_sql_editor(
+    output_sql = sql_editor(
         value=final_output,
         key=f"output_sql_{len(final_output)}",
         readonly=True
