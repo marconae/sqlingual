@@ -46,14 +46,21 @@ source_dialect = st.session_state.get("source_dialect", dialects[3])
 current_input = st.session_state.get("input_sql", default_query)
 
 # Validate current SQL and update session state
+validation_error = None
 if current_input and current_input.strip():
     try:
         sqlglot.parse(current_input, dialect=source_dialect)
         st.session_state.sql_is_valid = True
-    except Exception:
+        validation_error = None
+    except Exception as e:
         st.session_state.sql_is_valid = False
+        validation_error = str(e)
 else:
     st.session_state.sql_is_valid = False
+    validation_error = None
+
+# Store validation error for display later
+st.session_state.validation_error = validation_error
 
 # Top row
 top_c1, top_c2, top_c3 = st.columns([.1, .3, .6], vertical_alignment="center")
@@ -98,12 +105,8 @@ with input_col:
     )
 
     # Show validation feedback
-    if input_sql and not st.session_state.sql_is_valid:
-        # Re-parse to get the specific error message for display
-        try:
-            sqlglot.parse(input_sql, dialect=source_dialect)
-        except Exception as e:
-            st.error(f"Syntax error: {str(e)}", icon="❌")
+    if input_sql and not st.session_state.sql_is_valid and st.session_state.validation_error:
+        st.error(f"Syntax error: {st.session_state.validation_error}", icon="❌")
 
 with output_col:
     # Handle transpilation
