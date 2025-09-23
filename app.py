@@ -1,6 +1,7 @@
 import sqlglot
 import streamlit as st
 from streamlit_ace import st_ace
+import base64
 
 
 def sql_editor(value="", key="sql_editor", height=500, readonly=False, auto_update=True):
@@ -126,6 +127,22 @@ with output_col:
         key=f"output_sql_{len(final_output)}",
         readonly=True
     )
+
+# Footer
+st.markdown("---")
+
+# Load and encode social media logos
+with open("assets/linkedin-logo.png", "rb") as f:
+    linkedin_logo_b64 = base64.b64encode(f.read()).decode()
+
+with open("assets/github-logo.png", "rb") as f:
+    github_logo_b64 = base64.b64encode(f.read()).decode()
+
+st.markdown(f"""
+SQLingual by Marco Nätlitz - Follow me on <a href="https://www.linkedin.com/in/marco-naetlitz/" target="_blank"><img src="data:image/png;base64,{linkedin_logo_b64}" width="16" height="16" style="vertical-align: middle; margin-right: 4px;" />LinkedIn</a> and <a href="https://github.com/marconae" target="_blank"><img src="data:image/png;base64,{github_logo_b64}" width="16" height="16" style="vertical-align: middle; margin-right: 4px;" />GitHub</a>
+""", unsafe_allow_html=True)
+
+st.markdown("<small>This application temporarily processes queries in memory to support interactive features. Query data is not persisted, stored on disk, or transmitted to external services. All input remains local to your active session and is discarded upon session termination.</small>", unsafe_allow_html=True)
 
 st.markdown("""
 <style>
