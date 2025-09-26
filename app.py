@@ -194,11 +194,11 @@ with open("assets/github-logo.png", "rb") as f:
     github_logo_b64 = base64.b64encode(f.read()).decode()
 
 st.markdown(f"""
-SQLingual is based on [sqlglot](https://github.com/tobymao/sqlglot). The app is free, [MIT licensed](https://opensource.org/licenses/MIT) and built by Marco Nätlitz - follow me on <a href="https://www.linkedin.com/in/marco-naetlitz/" target="_blank"><img src="data:image/png;base64,{linkedin_logo_b64}" width="16" height="16" style="vertical-align: middle; margin-right: 4px;" />LinkedIn</a> and <a href="https://github.com/marconae" target="_blank"><img src="data:image/png;base64,{github_logo_b64}" width="16" height="16" style="vertical-align: middle; margin-right: 4px;" />GitHub</a>
+SQLingual is based on [sqlglot](https://github.com/tobymao/sqlglot) and built with [streamlit](https://streamlit.io). The app is free, [MIT licensed](https://opensource.org/licenses/MIT) and built by Marco Nätlitz - follow me on <a href="https://www.linkedin.com/in/marco-naetlitz/" target="_blank"><img src="data:image/png;base64,{linkedin_logo_b64}" width="16" height="16" style="vertical-align: middle; margin-right: 4px;" />LinkedIn</a> and <a href="https://github.com/marconae" target="_blank"><img src="data:image/png;base64,{github_logo_b64}" width="16" height="16" style="vertical-align: middle; margin-right: 4px;" />GitHub</a>
 """, unsafe_allow_html=True)
 
 st.markdown(
-    "<small>This application temporarily processes queries to support interactive features leveraging the streamlit session state. Query data is not persisted, or transmitted to external services. All input remains local to your active session and is discarded upon session termination.</small>",
+    "<small>This application temporarily processes queries to support interactive features leveraging the streamlit session state. Query data is not persisted, or transmitted to external services. All input remains local to your active session and is discarded upon session termination. The app analyzes traffic privacy-friendly with [Umami](https://umami.is).</small>",
     unsafe_allow_html=True)
 
 st.markdown("""
