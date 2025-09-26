@@ -4,6 +4,7 @@ from streamlit_ace import st_ace
 import base64
 
 
+# Render the SQL editor
 def sql_editor(value="", key="sql_editor", height=500, readonly=False, auto_update=True):
     return st_ace(
         value=value,
@@ -16,7 +17,11 @@ def sql_editor(value="", key="sql_editor", height=500, readonly=False, auto_upda
     )
 
 # Available dialects of sqlglot
-dialects = sorted([dialect.lower() for dialect in dialects.DIALECTS])
+@st.cache_data
+def get_dialects():
+    return sorted([dialect.lower() for dialect in dialects.DIALECTS])
+
+DIALECTS = get_dialects()
 
 # Default query loaded on page open
 @st.cache_data
@@ -31,7 +36,7 @@ if "sql_is_valid" not in st.session_state:
     st.session_state.sql_is_valid = True
 
 # Get current values for validation
-source_dialect = st.session_state.get("source_dialect", dialects[3])
+source_dialect = st.session_state.get("source_dialect", DIALECTS[3])
 current_input = st.session_state.get("input_sql", default_query)
 
 # Validate current SQL and update session state
@@ -71,7 +76,7 @@ with top_c3:
         source_dialect = st.selectbox(
             "",
             label_visibility="collapsed",
-            options=dialects,
+            options=DIALECTS,
             index=3,
             key="source_dialect"
         )
@@ -82,7 +87,7 @@ with top_c3:
         target_dialect = st.selectbox(
             "",
             label_visibility="collapsed",
-            options=dialects,
+            options=DIALECTS,
             index=10,
             key="target_dialect"
         )
