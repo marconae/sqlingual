@@ -1,6 +1,7 @@
 import base64
 
 import streamlit as st
+import streamlit.components.v1 as components
 from sqlglot import parse, dialects, transpile
 from streamlit_ace import st_ace
 
@@ -209,3 +210,8 @@ st.markdown("""
 }
 </style>
 """, unsafe_allow_html=True)
+
+# Umami Analytics
+components.html("""
+<script defer src="https://cloud.umami.is/script.js" data-website-id="380a8eb0-105d-4dbc-aa76-48bac0240ea0"></script>
+""")
