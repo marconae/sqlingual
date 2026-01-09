@@ -201,10 +201,6 @@ st.markdown(f"""
 <small>SQLingual supports the following dialects: {', '.join(dialects.DIALECTS)}.</small>
 """, unsafe_allow_html=True)
 
-st.markdown(
-    "<small>This application temporarily processes queries to support interactive features leveraging the streamlit session state. Query data is not persisted, or transmitted to external services. All input remains local to your active session and is discarded upon session termination. The app analyzes traffic privacy-friendly with [Umami](https://umami.is).</small>",
-    unsafe_allow_html=True)
-
 st.markdown("""
 <style>
 .main .block-container {
@@ -214,8 +210,3 @@ st.markdown("""
 }
 </style>
 """, unsafe_allow_html=True)
-
-# Umami Analytics
-components.html("""
-<script defer src="https://cloud.umami.is/script.js" data-website-id="380a8eb0-105d-4dbc-aa76-48bac0240ea0"></script>
-""")
