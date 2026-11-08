@@ -1,8 +1,6 @@
-# SQLingual
+# sqlingual
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://sqlingual.streamlit.app/)
-
-**Translate SQL between 30+ dialects 🚀** - try it here: 👉 [sqlingual.streamlit.app](https://sqlingual.streamlit.app/)
+**Translate SQL between 30+ dialects using sqlglot**
 
 ## What can you use it for?
 
