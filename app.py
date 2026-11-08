@@ -89,15 +89,14 @@ if st.session_state.get("swap_requested", False):
 # Page config
 st.set_page_config(
     page_title="SQLingual",
-    layout="wide",
-    page_icon="assets/logo.png"
+    layout="wide"
 )
 
 # Top row
 top_c1, top_c2, top_c3 = st.columns([.1, .3, .6], vertical_alignment="center")
 
 with top_c1:
-    st.image("assets/logo.png", width=80)
+    st.markdown("**sqlingual**")
 with top_c2:
     st.markdown("Translate SQL between 30 different dialects 🚀")
 with top_c3:
